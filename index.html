@@ -18,23 +18,30 @@
             theme: {
                 extend: {
                     colors: {
-                        rose: {
-                            50: '#fff1f2',
-                            100: '#ffe4e6',
-                            200: '#fecdd3',
-                            300: '#fda4af',
-                            400: '#fb7185',
-                            500: '#f43f5e',
-                            600: '#e11d48',
+                        themeWhite: '#FFFFFF',
+                        themePink: {
+                            light: '#FFF0F5',
+                            DEFAULT: '#FF5C8D',
+                            hover: '#E04875',
+                            accent: '#FF85A1'
                         },
-                        blush: {
-                            light: '#FFF5F5',
-                            card: '#FFF0F3',
-                            accent: '#FFB4A2',
-                            border: '#FFCDB2'
+                        themeBlue: {
+                            light: '#EBF3FE',
+                            DEFAULT: '#4A90E2',
+                            hover: '#357ABD',
+                            border: '#C2DCFF'
                         },
-                        cream: '#FAF7F2',
-                        slateWarm: '#4A4E69',
+                        themeBrown: {
+                            light: '#FAF4EE',
+                            DEFAULT: '#8B5A2B',
+                            hover: '#6F4E37',
+                            border: '#E2D2C1'
+                        },
+                        themeBlack: {
+                            DEFAULT: '#1A1A1A',
+                            soft: '#222222',
+                            muted: '#555555'
+                        }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -46,8 +53,8 @@
     </script>
     <style>
         body {
-            background-color: #FAF7F2;
-            color: #4A4E69;
+            background-color: #FAFAFA;
+            color: #1A1A1A;
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
@@ -59,76 +66,84 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #FAF7F2;
+            background: #FFFFFF;
         }
         ::-webkit-scrollbar-thumb {
-            background: #FFB4A2;
+            background: #FF85A1;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #E5989B;
+            background: #8B5A2B;
         }
         /* Canvas Spinner Smoothness */
         #wheelCanvas {
             transition: transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99);
         }
-        /* Glassmorphism Effect */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 205, 178, 0.4);
+        /* Card Styles with high contrast borders */
+        .hub-card {
+            background: #FFFFFF;
+            border: 1.5px solid #1A1A1A;
+            box-shadow: 4px 4px 0px #1A1A1A;
+            border-radius: 1.25rem;
+        }
+        .hub-card-sm {
+            background: #FFFFFF;
+            border: 1.5px solid #1A1A1A;
+            box-shadow: 3px 3px 0px #1A1A1A;
+            border-radius: 1rem;
         }
     </style>
 </head>
 <body class="min-h-screen pb-16">
 
     <!-- Top Navigation / Header -->
-    <header class="sticky top-0 z-40 glass-card border-b border-blush-border/30 shadow-sm">
+    <header class="sticky top-0 z-40 bg-themeWhite border-b-2 border-themeBlack shadow-sm">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 shadow-inner">
-                    <i class="fa-solid font-bold fa-heart text-xl animate-pulse"></i>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-themePink text-white flex items-center justify-center border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">
+                    <i class="fa-solid fa-heart text-lg animate-pulse"></i>
                 </div>
                 <div>
-                    <h1 class="font-serif-custom font-bold text-lg md:text-xl text-slateWarm leading-tight">Our Special Hub</h1>
-                    <p class="text-xs text-rose-400 font-medium">Ruang Cerita & Momen Kita 💕</p>
+                    <h1 class="font-serif-custom font-bold text-lg md:text-xl text-themeBlack leading-tight">Our Special Hub</h1>
+                    <p class="text-xs text-themeBrown font-semibold">Putih • Pink • Biru • Coklat • Hitam 💕</p>
                 </div>
             </div>
             <!-- Quick Navigation Pills -->
-            <nav class="hidden md:flex gap-1 bg-rose-50/80 p-1.5 rounded-full border border-rose-100 text-xs font-medium">
-                <a href="#spinner-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Ide Kencan</a>
-                <a href="#bucket-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Bucket List</a>
-                <a href="#countdown-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Countdown</a>
-                <a href="#timeline-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Galeri Memori</a>
-                <a href="#notes-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Surat Rahasia</a>
+            <nav class="hidden md:flex gap-2 bg-themePink-light p-1.5 rounded-xl border border-themeBlack text-xs font-bold text-themeBlack">
+                <a href="#spinner-section" class="px-3 py-1.5 rounded-lg hover:bg-themeBlue hover:text-white transition-all">Ide Kencan</a>
+                <a href="#bucket-section" class="px-3 py-1.5 rounded-lg hover:bg-themePink hover:text-white transition-all">Bucket List</a>
+                <a href="#countdown-section" class="px-3 py-1.5 rounded-lg hover:bg-themeBrown hover:text-white transition-all">Countdown</a>
+                <a href="#timeline-section" class="px-3 py-1.5 rounded-lg hover:bg-themeBlue hover:text-white transition-all">Galeri Memori</a>
+                <a href="#notes-section" class="px-3 py-1.5 rounded-lg hover:bg-themePink hover:text-white transition-all">Surat Rahasia</a>
             </nav>
+            <!-- Reset Storage Button -->
+            <button onclick="resetAllData()" class="text-xs font-bold text-themePink hover:text-themeBlack border border-themePink hover:border-themeBlack px-3 py-1.5 rounded-lg transition-all">
+                <i class="fa-solid fa-rotate-left"></i> Reset Data
+            </button>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-6xl mx-auto px-4 pt-6 space-y-12">
+    <main class="max-w-6xl mx-auto px-4 pt-6 space-y-10">
 
         <!-- Hero Greeting Banner -->
-        <section class="relative rounded-3xl bg-gradient-to-r from-rose-100 via-blush-card to-orange-50 p-6 md:p-10 shadow-sm border border-blush-border/40 overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 opacity-10 text-rose-500 pointer-events-none">
-                <i class="fa-solid fa-heart text-[220px]"></i>
-            </div>
+        <section class="relative hub-card p-6 md:p-8 bg-gradient-to-r from-themePink-light via-themeWhite to-themeBlue-light overflow-hidden">
             <div class="relative z-10 max-w-2xl">
-                <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-semibold text-rose-500 shadow-sm border border-rose-100 inline-block mb-3">
-                    ✨ Welcome Back, Love!
+                <span class="px-3 py-1 bg-themeBrown text-white rounded-lg text-xs font-bold border border-themeBlack inline-block mb-3 shadow-[2px_2px_0px_#1A1A1A]">
+                    ✨ Portal Hubungan Kita
                 </span>
-                <h2 class="font-serif-custom text-2xl md:text-4xl font-bold text-slateWarm mb-3 leading-snug">
+                <h2 class="font-serif-custom text-2xl md:text-4xl font-bold text-themeBlack mb-3 leading-snug">
                     Tempat Menyimpan Setiap Jejak Kebahagiaan Kita.
                 </h2>
-                <p class="text-sm md:text-base text-slateWarm/80 leading-relaxed mb-6">
-                    Mulai dari bingung mau kencan ke mana, merencanakan mimpi bersama, hingga melihat kembali memori manis yang pernah kita lalui.
+                <p class="text-sm md:text-base text-themeBlack-muted font-medium leading-relaxed mb-6">
+                    Aplikasi interaktif dengan perpaduan warna Putih, Pink, Biru, Coklat, dan Hitam untuk mencatat memori, bucket list, serta menentukan ide kencan seru.
                 </p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="#spinner-section" class="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-medium px-5 py-2.5 rounded-2xl shadow-md shadow-rose-200 transition-all transform hover:-translate-y-0.5 text-sm">
+                    <a href="#spinner-section" class="inline-flex items-center gap-2 bg-themePink hover:bg-themePink-hover text-white font-bold px-5 py-2.5 rounded-xl border-2 border-themeBlack shadow-[3px_3px_0px_#1A1A1A] transition-all text-sm">
                         <i class="fa-solid fa-compass"></i> Putar Roda Kencan
                     </a>
-                    <a href="#notes-section" class="inline-flex items-center gap-2 bg-white hover:bg-rose-50 text-rose-500 font-medium px-5 py-2.5 rounded-2xl border border-rose-200 transition-all text-sm">
-                        <i class="fa-solid fa-envelope-open-text"></i> Baca Surat Rahasia
+                    <a href="#timeline-section" class="inline-flex items-center gap-2 bg-themeBlue hover:bg-themeBlue-hover text-white font-bold px-5 py-2.5 rounded-xl border-2 border-themeBlack shadow-[3px_3px_0px_#1A1A1A] transition-all text-sm">
+                        <i class="fa-solid fa-camera"></i> Upload Foto Memori
                     </a>
                 </div>
             </div>
@@ -136,47 +151,47 @@
 
         <!-- 1. DATE NIGHT SPINNER / DECISION MAKER -->
         <section id="spinner-section" class="scroll-mt-20">
-            <div class="text-center max-w-xl mx-auto mb-8">
-                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Date Night Decision Maker</span>
-                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">"Mau Makan/Kencan ke Mana?" 🤔</h2>
-                <p class="text-sm text-slateWarm/70 mt-1">Gak perlu bingung lagi pas ditanya mau ke mana. Putar rodanya dan biarkan takdir yang memilih!</p>
+            <div class="text-center max-w-xl mx-auto mb-6">
+                <span class="text-xs font-bold text-white bg-themeBlue px-3 py-1 rounded-md border border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">DATE NIGHT DECISION MAKER</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-themeBlack mt-2">"Mau Makan/Kencan ke Mana?" 🤔</h2>
+                <p class="text-sm text-themeBlack-muted font-medium mt-1">Gak perlu bingung lagi pas ditanya mau ke mana. Putar rodanya sekarang!</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center hub-card p-6 md:p-8">
                 <!-- Wheel Canvas Area -->
                 <div class="lg:col-span-7 flex flex-col items-center justify-center relative">
                     <!-- Pointer Arrow -->
-                    <div class="absolute -top-3 z-20 text-rose-600 drop-shadow-md">
-                        <i class="fa-solid fa-location-pin text-4xl transform rotate-180"></i>
+                    <div class="absolute -top-3 z-20 text-themePink drop-shadow-md">
+                        <i class="fa-solid fa-location-pin text-4xl transform rotate-180 border-themeBlack"></i>
                     </div>
                     <!-- Canvas -->
-                    <div class="relative w-full max-w-[340px] aspect-square flex items-center justify-center p-2 bg-rose-50/50 rounded-full border border-rose-100 shadow-inner">
-                        <canvas id="wheelCanvas" width="320" height="320" class="rounded-full shadow-lg"></canvas>
+                    <div class="relative w-full max-w-[320px] aspect-square flex items-center justify-center p-2 bg-themeBrown-light rounded-full border-2 border-themeBlack shadow-md">
+                        <canvas id="wheelCanvas" width="300" height="300" class="rounded-full"></canvas>
                     </div>
                     <!-- Spin Button -->
-                    <button id="spinBtn" onclick="spinWheel()" class="mt-6 bg-gradient-to-r from-rose-500 to-rose-400 hover:from-rose-600 hover:to-rose-500 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-rose-200 transition-all transform active:scale-95 flex items-center gap-2 text-base">
+                    <button id="spinBtn" onclick="spinWheel()" class="mt-6 bg-themePink hover:bg-themePink-hover text-white font-bold px-8 py-3 rounded-xl border-2 border-themeBlack shadow-[4px_4px_0px_#1A1A1A] transition-all active:translate-x-0.5 active:translate-y-0.5 flex items-center gap-2 text-base">
                         <i class="fa-solid fa-dice text-lg"></i> Putar Roda!
                     </button>
                 </div>
 
                 <!-- Result & Options Management -->
-                <div class="lg:col-span-5 space-y-6">
+                <div class="lg:col-span-5 space-y-5">
                     <!-- Winner Box -->
-                    <div class="bg-gradient-to-br from-blush-card to-rose-50 p-5 rounded-2xl border border-rose-200 text-center relative overflow-hidden">
-                        <div class="text-xs font-semibold uppercase tracking-wider text-rose-400 mb-1">Hasil Putaran Saat Ini</div>
-                        <div id="spunResult" class="font-serif-custom text-xl md:text-2xl font-bold text-rose-600 my-2">
+                    <div class="bg-themePink-light p-5 rounded-xl border-2 border-themeBlack shadow-[3px_3px_0px_#1A1A1A] text-center">
+                        <div class="text-xs font-bold uppercase tracking-wider text-themeBrown">Hasil Putaran Saat Ini</div>
+                        <div id="spunResult" class="font-serif-custom text-xl md:text-2xl font-bold text-themePink my-2">
                             ✨ Siap Diputar!
                         </div>
-                        <p id="spunSubtext" class="text-xs text-slateWarm/70 italic">Klik tombol "Putar Roda!" untuk menentukan agenda kencan kalian.</p>
+                        <p id="spunSubtext" class="text-xs text-themeBlack-muted font-medium italic">Klik tombol "Putar Roda!" untuk menentukan agenda kencan kalian.</p>
                     </div>
 
                     <!-- Custom Option Input -->
                     <div>
-                        <label class="block text-xs font-semibold text-slateWarm mb-2">Tambah Pilihan Kencan Baru:</label>
+                        <label class="block text-xs font-bold text-themeBlack mb-2">Tambah Pilihan Kencan Baru:</label>
                         <div class="flex gap-2">
-                            <input type="text" id="newOptionInput" placeholder="Misal: Thrift Shopping, Es Krim..." class="flex-1 px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 bg-cream/40">
-                            <button onclick="addWheelOption()" class="bg-slateWarm hover:bg-slateWarm/90 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-1">
-                                <i class="fa-solid fa-plus"></i> Tambah
+                            <input type="text" id="newOptionInput" placeholder="Misal: Thrift Shopping, Es Krim..." class="flex-1 px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue bg-white font-medium">
+                            <button onclick="addWheelOption()" class="bg-themeBlue hover:bg-themeBlue-hover text-white px-4 py-2 rounded-xl border-2 border-themeBlack font-bold text-sm transition-all shadow-[2px_2px_0px_#1A1A1A]">
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                     </div>
@@ -184,10 +199,10 @@
                     <!-- Options List -->
                     <div>
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-semibold text-slateWarm">Daftar Pilihan:</span>
-                            <button onclick="resetWheelOptions()" class="text-xs text-rose-500 hover:underline">Reset Default</button>
+                            <span class="text-xs font-bold text-themeBlack">Daftar Pilihan:</span>
+                            <button onclick="resetWheelOptions()" class="text-xs text-themePink hover:underline font-bold">Reset Default</button>
                         </div>
-                        <div id="optionsList" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-1">
+                        <div id="optionsList" class="flex flex-wrap gap-2 max-h-36 overflow-y-auto p-1">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -197,34 +212,34 @@
 
         <!-- 2. INTERACTIVE SHARED BUCKET LIST -->
         <section id="bucket-section" class="scroll-mt-20">
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-rose-100">
+            <div class="hub-card p-6 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b-2 border-themeBlack">
                     <div>
-                        <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Dream Together</span>
-                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Target & Bucket List Bersama ✈️</h2>
-                        <p class="text-sm text-slateWarm/70 mt-1">Daftar petualangan dan impian manis yang ingin kita wujudkan berdua.</p>
+                        <span class="text-xs font-bold text-white bg-themePink px-3 py-1 rounded-md border border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">DREAM TOGETHER</span>
+                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-themeBlack mt-2">Target & Bucket List Bersama ✈️</h2>
+                        <p class="text-sm text-themeBlack-muted font-medium mt-1">Daftar petualangan dan impian manis yang ingin kita wujudkan berdua.</p>
                     </div>
 
                     <!-- Progress Bar Component -->
-                    <div class="bg-rose-50/80 p-4 rounded-2xl border border-rose-100 min-w-[240px]">
-                        <div class="flex justify-between items-center text-xs font-bold text-slateWarm mb-1.5">
+                    <div class="bg-themeBlue-light p-4 rounded-xl border-2 border-themeBlack shadow-[3px_3px_0px_#1A1A1A] min-w-[240px]">
+                        <div class="flex justify-between items-center text-xs font-bold text-themeBlack mb-1.5">
                             <span>Progress Terwujud</span>
-                            <span id="bucketProgressText" class="text-rose-500">0%</span>
+                            <span id="bucketProgressText" class="text-themeBlue">0%</span>
                         </div>
-                        <div class="w-full h-3 bg-rose-100 rounded-full overflow-hidden">
-                            <div id="bucketProgressBar" class="h-full bg-gradient-to-r from-rose-400 to-rose-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                        <div class="w-full h-3 bg-white rounded-full border border-themeBlack overflow-hidden">
+                            <div id="bucketProgressBar" class="h-full bg-themeBlue transition-all duration-500 rounded-full" style="width: 0%"></div>
                         </div>
-                        <div class="text-[11px] text-slateWarm/60 text-right mt-1" id="bucketCountDetail">0 dari 0 selesai</div>
+                        <div class="text-[11px] text-themeBlack-muted font-semibold text-right mt-1" id="bucketCountDetail">0 dari 0 selesai</div>
                     </div>
                 </div>
 
                 <!-- Add New Bucket Item Form -->
-                <form id="bucketForm" onsubmit="addBucketItem(event)" class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-8 bg-cream/50 p-4 rounded-2xl border border-blush-border/40">
+                <form id="bucketForm" onsubmit="addBucketItem(event)" class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-6 bg-themeBrown-light p-4 rounded-xl border-2 border-themeBlack">
                     <div class="md:col-span-5">
-                        <input type="text" id="bucketTitle" placeholder="Misal: Liburan ke Bali, Nonton Konser..." required class="w-full px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                        <input type="text" id="bucketTitle" placeholder="Misal: Liburan ke Bali, Nonton Konser..." required class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themePink font-medium">
                     </div>
                     <div class="md:col-span-4">
-                        <select id="bucketCategory" class="w-full px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 bg-white">
+                        <select id="bucketCategory" class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themePink bg-white font-medium">
                             <option value="Liburan">🏝️ Liburan & Jalan-jalan</option>
                             <option value="Kuliner">🍕 Wisata Kuliner</option>
                             <option value="Target">🎯 Target / Milestone Bersama</option>
@@ -232,19 +247,19 @@
                         </select>
                     </div>
                     <div class="md:col-span-3">
-                        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2.5 rounded-xl text-sm transition-all shadow-md shadow-rose-200 flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-themePink hover:bg-themePink-hover text-white font-bold py-2 rounded-xl border-2 border-themeBlack text-sm transition-all shadow-[2px_2px_0px_#1A1A1A] flex items-center justify-center gap-2">
                             <i class="fa-solid fa-plus-circle"></i> Tambah Wish
                         </button>
                     </div>
                 </form>
 
                 <!-- Filter Tabs -->
-                <div class="flex gap-2 border-b border-rose-100 pb-3 mb-6 overflow-x-auto text-xs font-semibold">
-                    <button onclick="filterBucket('All')" class="bucket-tab active px-4 py-2 rounded-xl bg-rose-500 text-white transition-all">Semua</button>
-                    <button onclick="filterBucket('Liburan')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🏝️ Liburan</button>
-                    <button onclick="filterBucket('Kuliner')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🍕 Kuliner</button>
-                    <button onclick="filterBucket('Target')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🎯 Target</button>
-                    <button onclick="filterBucket('Aktivitas')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🎨 Aktivitas</button>
+                <div class="flex gap-2 border-b-2 border-themeBlack pb-3 mb-6 overflow-x-auto text-xs font-bold">
+                    <button onclick="filterBucket('All')" class="bucket-tab active px-4 py-1.5 rounded-lg border border-themeBlack bg-themeBlack text-white transition-all">Semua</button>
+                    <button onclick="filterBucket('Liburan')" class="bucket-tab px-4 py-1.5 rounded-lg border border-themeBlack bg-themePink-light text-themeBlack hover:bg-themePink hover:text-white transition-all">🏝️ Liburan</button>
+                    <button onclick="filterBucket('Kuliner')" class="bucket-tab px-4 py-1.5 rounded-lg border border-themeBlack bg-themeBlue-light text-themeBlack hover:bg-themeBlue hover:text-white transition-all">🍕 Kuliner</button>
+                    <button onclick="filterBucket('Target')" class="bucket-tab px-4 py-1.5 rounded-lg border border-themeBlack bg-themeBrown-light text-themeBlack hover:bg-themeBrown hover:text-white transition-all">🎯 Target</button>
+                    <button onclick="filterBucket('Aktivitas')" class="bucket-tab px-4 py-1.5 rounded-lg border border-themeBlack bg-themePink-light text-themeBlack hover:bg-themePink hover:text-white transition-all">🎨 Aktivitas</button>
                 </div>
 
                 <!-- Bucket List Container -->
@@ -256,10 +271,10 @@
 
         <!-- 3. COUNTDOWN TIMER & REMINDERS -->
         <section id="countdown-section" class="scroll-mt-20">
-            <div class="text-center max-w-xl mx-auto mb-8">
-                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Special Milestones</span>
-                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Momen Spesial Yang Ditunggu ⏳</h2>
-                <p class="text-sm text-slateWarm/70 mt-1">Menghitung detik demi detik menuju hari bahagia kita berikutnya.</p>
+            <div class="text-center max-w-xl mx-auto mb-6">
+                <span class="text-xs font-bold text-white bg-themeBrown px-3 py-1 rounded-md border border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">MILESTONES</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-themeBlack mt-2">Momen Spesial Yang Ditunggu ⏳</h2>
+                <p class="text-sm text-themeBlack-muted font-medium mt-1">Menghitung detik demi detik menuju hari bahagia kita berikutnya.</p>
             </div>
 
             <!-- Countdown Cards Grid -->
@@ -269,32 +284,32 @@
 
             <!-- Add Custom Countdown Toggle Button -->
             <div class="text-center">
-                <button onclick="toggleCountdownModal()" class="inline-flex items-center gap-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-2 rounded-xl border border-rose-200 transition-all">
+                <button onclick="toggleCountdownModal()" class="inline-flex items-center gap-2 text-xs font-bold text-themeBlack bg-themeBrown-light hover:bg-themeBrown hover:text-white px-4 py-2 rounded-xl border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] transition-all">
                     <i class="fa-solid fa-calendar-plus"></i> Tambah Event / Countdown Baru
                 </button>
             </div>
 
             <!-- Modal Add Countdown -->
-            <div id="countdownModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rose-100 relative animate-fade-in">
-                    <button onclick="toggleCountdownModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+            <div id="countdownModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl max-w-md w-full p-6 border-2 border-themeBlack shadow-[6px_6px_0px_#1A1A1A] relative">
+                    <button onclick="toggleCountdownModal()" class="absolute top-4 right-4 text-themeBlack hover:text-themePink">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
-                    <h3 class="font-serif-custom font-bold text-xl text-slateWarm mb-1">Tambah Countdown Baru</h3>
-                    <p class="text-xs text-slateWarm/70 mb-4">Buat pengingat hari ulang tahun, kencan, atau acara liburan mendatang.</p>
+                    <h3 class="font-serif-custom font-bold text-xl text-themeBlack mb-1">Tambah Countdown Baru</h3>
+                    <p class="text-xs text-themeBlack-muted mb-4 font-medium">Buat pengingat hari ulang tahun, kencan, atau acara liburan mendatang.</p>
                     
                     <form onsubmit="addCustomCountdown(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Nama Acara / Momen:</label>
-                            <input type="text" id="cdTitle" required placeholder="Misal: Anniversary Ke-2, Liburan Jogja" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Nama Acara / Momen:</label>
+                            <input type="text" id="cdTitle" required placeholder="Misal: Anniversary Ke-2, Liburan Jogja" class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Tanggal Acara:</label>
-                            <input type="date" id="cdDate" required class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Tanggal Acara:</label>
+                            <input type="date" id="cdDate" required class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Pilih Ikon / Emoji:</label>
-                            <select id="cdIcon" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Pilih Ikon / Emoji:</label>
+                            <select id="cdIcon" class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium bg-white">
                                 <option value="💖">💖 Heart / Romantic</option>
                                 <option value="🎂">🎂 Ulang Tahun</option>
                                 <option value="✈️">✈️ Liburan / Traveling</option>
@@ -303,8 +318,8 @@
                             </select>
                         </div>
                         <div class="flex justify-end gap-2 pt-2">
-                            <button type="button" onclick="toggleCountdownModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slateWarm hover:bg-slate-100">Batal</button>
-                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-medium bg-rose-500 hover:bg-rose-600 text-white shadow-md">Simpan</button>
+                            <button type="button" onclick="toggleCountdownModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-themeBlack hover:bg-gray-100 border border-themeBlack">Batal</button>
+                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-themePink hover:bg-themePink-hover text-white border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -313,15 +328,15 @@
 
         <!-- 4. MEMORY TIMELINE & GALLERY -->
         <section id="timeline-section" class="scroll-mt-20">
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-rose-100">
+            <div class="hub-card p-6 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b-2 border-themeBlack">
                     <div>
-                        <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Memory Lane</span>
-                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Galeri & Timeline Kenangan 📸</h2>
-                        <p class="text-sm text-slateWarm/70 mt-1">Kumpulan momen berharga yang tak pernah pudar oleh waktu.</p>
+                        <span class="text-xs font-bold text-white bg-themeBlue px-3 py-1 rounded-md border border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">MEMORY LANE</span>
+                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-themeBlack mt-2">Galeri & Timeline Kenangan 📸</h2>
+                        <p class="text-sm text-themeBlack-muted font-medium mt-1">Kumpulan foto dan momen berharga yang diambil langsung dari galeri HP/laptop.</p>
                     </div>
-                    <button onclick="toggleMemoryModal()" class="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-medium px-4 py-2.5 rounded-xl shadow-md shadow-rose-200 transition-all text-sm">
-                        <i class="fa-solid fa-camera-retro"></i> Tambah Kenangan Baru
+                    <button onclick="toggleMemoryModal()" class="inline-flex items-center gap-2 bg-themeBlue hover:bg-themeBlue-hover text-white font-bold px-4 py-2.5 rounded-xl border-2 border-themeBlack shadow-[3px_3px_0px_#1A1A1A] transition-all text-sm">
+                        <i class="fa-solid fa-camera-retro"></i> Tambah Foto Kenangan
                     </button>
                 </div>
 
@@ -332,35 +347,57 @@
             </div>
 
             <!-- Modal Add Memory -->
-            <div id="memoryModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rose-100 relative animate-fade-in">
-                    <button onclick="toggleMemoryModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+            <div id="memoryModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl max-w-md w-full p-6 border-2 border-themeBlack shadow-[6px_6px_0px_#1A1A1A] relative max-h-[90vh] overflow-y-auto">
+                    <button onclick="toggleMemoryModal()" class="absolute top-4 right-4 text-themeBlack hover:text-themePink z-10">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
-                    <h3 class="font-serif-custom font-bold text-xl text-slateWarm mb-1">Simpan Momen Baru</h3>
-                    <p class="text-xs text-slateWarm/70 mb-4">Abadikan momen manis yang baru saja kalian lewati bersama.</p>
+                    <h3 class="font-serif-custom font-bold text-xl text-themeBlack mb-1">Simpan Momen Baru</h3>
+                    <p class="text-xs text-themeBlack-muted mb-4 font-medium">Pilih foto dari galeri dan tuliskan cerita manis di baliknya.</p>
                     
                     <form onsubmit="addMemoryItem(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Judul Momen:</label>
-                            <input type="text" id="memTitle" required placeholder="Misal: Kencan Pertama di Cafe, Pantai Parangtritis" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Judul Momen:</label>
+                            <input type="text" id="memTitle" required placeholder="Misal: Kencan Pertama, Pantai Parangtritis" class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Tanggal Momen:</label>
-                            <input type="date" id="memDate" required class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Tanggal Momen:</label>
+                            <input type="date" id="memDate" required class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium">
                         </div>
+                        
+                        <!-- File Upload Area for Gallery Input -->
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">URL Foto (Opsional):</label>
-                            <input type="url" id="memImg" placeholder="https://images.unsplash.com/..." class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
-                            <span class="text-[10px] text-slateWarm/50">Kosongkan jika ingin menggunakan gambar estetik otomatis.</span>
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Pilih Foto dari Galeri HP/Laptop:</label>
+                            
+                            <!-- Upload Box -->
+                            <div id="uploadBox" class="border-2 border-dashed border-themeBlack bg-themeBlue-light hover:bg-white p-5 rounded-xl text-center cursor-pointer transition-all relative">
+                                <input type="file" id="memImgFile" accept="image/*" onchange="previewMemoryImage(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="space-y-1">
+                                    <div class="w-10 h-10 bg-themeBlue text-white rounded-full flex items-center justify-center mx-auto text-lg border border-themeBlack">
+                                        <i class="fa-solid fa-image"></i>
+                                    </div>
+                                    <p class="text-xs font-bold text-themeBlack">Klik untuk pilih foto dari galeri</p>
+                                    <p class="text-[10px] text-themeBlack-muted font-medium">PNG, JPG, JPEG, atau WEBP</p>
+                                </div>
+                            </div>
+
+                            <!-- Live Image Preview Box -->
+                            <div id="imagePreviewContainer" class="hidden mt-3 relative rounded-xl overflow-hidden border-2 border-themeBlack bg-slate-50">
+                                <img id="imagePreview" src="" alt="Preview Foto" class="w-full h-44 object-cover">
+                                <button type="button" onclick="removeSelectedImage()" class="absolute top-2 right-2 bg-themeBlack hover:bg-themePink text-white w-7 h-7 rounded-full flex items-center justify-center text-xs transition-colors z-20 border border-white">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                                <span class="absolute bottom-2 left-2 bg-themeBlack/80 text-white text-[10px] px-2 py-0.5 rounded-md font-bold">Pratinjau Foto</span>
+                            </div>
                         </div>
+
                         <div>
-                            <label class="block text-xs font-semibold text-slateWarm mb-1">Catatan / Pesan Singkat:</label>
-                            <textarea id="memNote" rows="3" required placeholder="Tuliskan cerita singkat atau perasaanmu di momen ini..." class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"></textarea>
+                            <label class="block text-xs font-bold text-themeBlack mb-1">Catatan / Pesan Singkat:</label>
+                            <textarea id="memNote" rows="3" required placeholder="Tuliskan cerita singkat atau perasaanmu di momen ini..." class="w-full px-3.5 py-2 rounded-xl border-2 border-themeBlack text-sm focus:outline-none focus:ring-2 focus:ring-themeBlue font-medium"></textarea>
                         </div>
                         <div class="flex justify-end gap-2 pt-2">
-                            <button type="button" onclick="toggleMemoryModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slateWarm hover:bg-slate-100">Batal</button>
-                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-medium bg-rose-500 hover:bg-rose-600 text-white shadow-md">Simpan Momen</button>
+                            <button type="button" onclick="toggleMemoryModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-themeBlack hover:bg-gray-100 border border-themeBlack">Batal</button>
+                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-themeBlue hover:bg-themeBlue-hover text-white border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">Simpan Momen</button>
                         </div>
                     </form>
                 </div>
@@ -369,70 +406,70 @@
 
         <!-- 5. PRIVATE LOVE NOTES / MOOD BOOSTER -->
         <section id="notes-section" class="scroll-mt-20">
-            <div class="text-center max-w-xl mx-auto mb-8">
-                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Open When... Letters</span>
-                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Surat Pelipur Lara & Mood Booster 💌</h2>
-                <p class="text-sm text-slateWarm/70 mt-1">Buka surat digital ini di saat kamu membutuhkan semangat atau pengingat betapa berharganya kamu.</p>
+            <div class="text-center max-w-xl mx-auto mb-6">
+                <span class="text-xs font-bold text-white bg-themePink px-3 py-1 rounded-md border border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">OPEN WHEN... LETTERS</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-themeBlack mt-2">Surat Pelipur Lara & Mood Booster 💌</h2>
+                <p class="text-sm text-themeBlack-muted font-medium mt-1">Buka surat digital ini di saat kamu membutuhkan semangat atau pengingat betapa berharganya kamu.</p>
             </div>
 
             <!-- Open When Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- Card 1 -->
-                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div class="hub-card-sm p-5 flex flex-col justify-between hover:bg-themePink-light transition-all">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-rose-100/80 text-rose-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-themePink text-white flex items-center justify-center text-xl mb-3 border border-themeBlack">
                             🥺
                         </div>
-                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #1</span>
-                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Kamu Kangen...</h3>
-                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Pesan spesial ketika rasa rindu sedang datang dan jarak terasa memisah.</p>
+                        <span class="text-[11px] font-bold text-themeBrown uppercase tracking-wider">Surat #1</span>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack mt-1">Buka Saat Kamu Kangen...</h3>
+                        <p class="text-xs text-themeBlack-muted font-medium mt-2 line-clamp-2">Pesan spesial ketika rasa rindu sedang datang dan jarak terasa memisah.</p>
                     </div>
-                    <button onclick="openNoteModal('Buka Saat Kamu Kangen... 🥺', 'Ingat ya, sejauh apa pun jaraknya atau sesibuk apa pun harinya, kamu selalu ada di pikiranku. Kangen itu tanda kalau kehadiranmu sangat berarti buat aku. Kalau kangen, langsung telfon atau kirim pesan ya! Aku di sini buat kamu. ❤️')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                    <button onclick="openNoteModal('Buka Saat Kamu Kangen... 🥺', 'Ingat ya, sejauh apa pun jaraknya atau sesibuk apa pun harinya, kamu selalu ada di pikiranku. Kangen itu tanda kalau kehadiranmu sangat berarti buat aku. Kalau kangen, langsung telfon atau kirim pesan ya! Aku di sini buat kamu. ❤️')" class="mt-4 w-full py-2 rounded-xl bg-themePink text-white text-xs font-bold border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] hover:bg-themePink-hover transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-envelope-open"></i> Buka Surat
                     </button>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div class="hub-card-sm p-5 flex flex-col justify-between hover:bg-themeBrown-light transition-all">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-amber-100/80 text-amber-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-themeBrown text-white flex items-center justify-center text-xl mb-3 border border-themeBlack">
                             😮‍💨
                         </div>
-                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #2</span>
-                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Kamu Lelah/Capek...</h3>
-                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Sedikit pelukan hangat digital setelah hari yang panjang dan menguras energi.</p>
+                        <span class="text-[11px] font-bold text-themeBrown uppercase tracking-wider">Surat #2</span>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack mt-1">Buka Saat Kamu Lelah/Capek...</h3>
+                        <p class="text-xs text-themeBlack-muted font-medium mt-2 line-clamp-2">Pelukan hangat digital setelah hari yang panjang dan menguras energi.</p>
                     </div>
-                    <button onclick="openNoteModal('Buka Saat Kamu Lelah/Capek... 😮‍💨', 'Terima kasih ya sudah berjuang hebat hari ini. Kamu luar biasa! Sekarang rest dulu, jangan terlalu keras sama diri sendiri. Apapun masalahnya, kita hadapi bareng-bareng. Mau dipukpuk atau ditemani ngobrol? Aku siap mendengarkan! ☕✨')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                    <button onclick="openNoteModal('Buka Saat Kamu Lelah/Capek... 😮‍💨', 'Terima kasih ya sudah berjuang hebat hari ini. Kamu luar biasa! Sekarang rest dulu, jangan terlalu keras sama diri sendiri. Apapun masalahnya, kita hadapi bareng-bareng. Mau dipukpuk atau ditemani ngobrol? Aku siap mendengarkan! ☕✨')" class="mt-4 w-full py-2 rounded-xl bg-themeBrown text-white text-xs font-bold border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] hover:bg-themeBrown-hover transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-envelope-open"></i> Buka Surat
                     </button>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div class="hub-card-sm p-5 flex flex-col justify-between hover:bg-themeBlue-light transition-all">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-blue-100/80 text-blue-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-themeBlue text-white flex items-center justify-center text-xl mb-3 border border-themeBlack">
                             💪
                         </div>
-                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #3</span>
-                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Butuh Motivasi...</h3>
-                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Suntikan semangat saat kamu sedang meragukan kemampuan dirimu sendiri.</p>
+                        <span class="text-[11px] font-bold text-themeBrown uppercase tracking-wider">Surat #3</span>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack mt-1">Buka Saat Butuh Motivasi...</h3>
+                        <p class="text-xs text-themeBlack-muted font-medium mt-2 line-clamp-2">Suntikan semangat saat kamu sedang meragukan kemampuan dirimu sendiri.</p>
                     </div>
-                    <button onclick="openNoteModal('Buka Saat Butuh Motivasi... 💪', 'Jangan pernah ragu sama kemampuan kamu! Aku adalah orang yang paling percaya kalau kamu bisa melewati ini semua. Kamu pintar, kuat, dan punya hati yang luar biasa. Tarik napas dalam-dalam, kamu pasti bisa! Aku selalu dukung kamu di belakang. 🚀')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                    <button onclick="openNoteModal('Buka Saat Butuh Motivasi... 💪', 'Jangan pernah ragu sama kemampuan kamu! Aku adalah orang yang paling percaya kalau kamu bisa melewati ini semua. Kamu pintar, kuat, dan punya hati yang luar biasa. Tarik napas dalam-dalam, kamu pasti bisa! Aku selalu dukung kamu di belakang. 🚀')" class="mt-4 w-full py-2 rounded-xl bg-themeBlue text-white text-xs font-bold border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] hover:bg-themeBlue-hover transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-envelope-open"></i> Buka Surat
                     </button>
                 </div>
 
                 <!-- Card 4 -->
-                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                <div class="hub-card-sm p-5 flex flex-col justify-between hover:bg-themePink-light transition-all">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-100/80 text-emerald-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-themePink text-white flex items-center justify-center text-xl mb-3 border border-themeBlack">
                             🥳
                         </div>
-                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #4</span>
-                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Ada Kabar Bahagia!</h3>
-                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Perayaan kecil atas setiap pencapaian dan kebahagiaan yang kamu raih.</p>
+                        <span class="text-[11px] font-bold text-themeBrown uppercase tracking-wider">Surat #4</span>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack mt-1">Buka Saat Ada Kabar Bahagia!</h3>
+                        <p class="text-xs text-themeBlack-muted font-medium mt-2 line-clamp-2">Perayaan kecil atas setiap pencapaian dan kebahagiaan yang kamu raih.</p>
                     </div>
-                    <button onclick="openNoteModal('Buka Saat Ada Kabar Bahagia! 🥳', 'YAY! SELAMAT YAAA! 🎉 Aku melompat bahagia dengar kabar baik ini! Kamu pantas banget mendapatkan ini semua setelah kerja kerasmu. Yuk perbaiki mood, kita rayakan bareng dengan makan makanan kesukaanmu nanti malam! Love you so much! 🥰')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                    <button onclick="openNoteModal('Buka Saat Ada Kabar Bahagia! 🥳', 'YAY! SELAMAT YAAA! 🎉 Aku melompat bahagia dengar kabar baik ini! Kamu pantas banget mendapatkan ini semua setelah kerja kerasmu. Yuk perbaiki mood, kita rayakan bareng dengan makan makanan kesukaanmu nanti malam! Love you so much! 🥰')" class="mt-4 w-full py-2 rounded-xl bg-themePink text-white text-xs font-bold border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] hover:bg-themePink-hover transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-envelope-open"></i> Buka Surat
                     </button>
                 </div>
@@ -442,27 +479,27 @@
     </main>
 
     <!-- Modal Reader Love Notes -->
-    <div id="noteReaderModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-white to-blush-light rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-rose-200 relative text-center">
-            <button onclick="closeNoteModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+    <div id="noteReaderModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 border-2 border-themeBlack shadow-[6px_6px_0px_#1A1A1A] relative text-center">
+            <button onclick="closeNoteModal()" class="absolute top-4 right-4 text-themeBlack hover:text-themePink">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
-            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto text-rose-500 text-2xl mb-4 shadow-inner">
+            <div class="w-14 h-14 bg-themePink text-white rounded-xl flex items-center justify-center mx-auto text-2xl mb-3 border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A]">
                 <i class="fa-solid fa-heart"></i>
             </div>
-            <h3 id="noteModalTitle" class="font-serif-custom font-bold text-2xl text-slateWarm mb-4">Judul Surat</h3>
-            <div class="bg-white/80 p-6 rounded-2xl border border-rose-100 shadow-sm text-slateWarm text-sm md:text-base leading-relaxed font-serif-custom italic mb-6" id="noteModalContent">
+            <h3 id="noteModalTitle" class="font-serif-custom font-bold text-2xl text-themeBlack mb-3">Judul Surat</h3>
+            <div class="bg-themePink-light p-5 rounded-xl border-2 border-themeBlack text-themeBlack text-sm md:text-base leading-relaxed font-serif-custom italic mb-5" id="noteModalContent">
                 Isi pesan...
             </div>
-            <button onclick="closeNoteModal()" class="bg-rose-500 hover:bg-rose-600 text-white font-medium px-6 py-2.5 rounded-xl shadow-md text-sm transition-all">
+            <button onclick="closeNoteModal()" class="bg-themePink hover:bg-themePink-hover text-white font-bold px-6 py-2 rounded-xl border-2 border-themeBlack shadow-[2px_2px_0px_#1A1A1A] text-xs transition-all">
                 Terima Kasih, Sayang ❤️
             </button>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="mt-20 border-t border-rose-100 pt-8 text-center text-xs text-slateWarm/60">
-        <p>Made with ❤️ specially for us • Always & Forever</p>
+    <footer class="mt-16 border-t-2 border-themeBlack pt-6 text-center text-xs font-bold text-themeBlack">
+        <p>Our Hub • Tema Putih, Pink, Biru, Coklat, & Hitam ✨</p>
     </footer>
 
     <!-- JAVASCRIPT LOGIC -->
@@ -477,7 +514,7 @@
             "Picnic Taman 🧺",
             "Masak Bareng di Rumah 🍳",
             "Deep Talk di Coffee Shop 💬",
-            "Beli Es Krim & Jalan-jalan 🍦",
+            "Beli Es Krim & Jalan 🍦",
             "Photobooth Bareng 📸"
         ];
 
@@ -487,7 +524,8 @@
 
         const canvas = document.getElementById('wheelCanvas');
         const ctx = canvas.getContext('2d');
-        const colors = ['#FFCDB2', '#FFB4A2', '#E5989B', '#B5838D', '#6B705C', '#FFE5D9', '#F4ACB7', '#D8E2DC'];
+        // Palette: Pink, Blue, Brown, White
+        const colors = ['#FF5C8D', '#4A90E2', '#8B5A2B', '#FF85A1', '#357ABD', '#E2D2C1'];
 
         function drawWheel() {
             const numOptions = wheelOptions.length;
@@ -505,6 +543,11 @@
                 ctx.lineTo(radius, radius);
                 ctx.fill();
 
+                // Add slice border
+                ctx.strokeStyle = '#1A1A1A';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
                 // Draw Text
                 ctx.save();
                 ctx.translate(radius, radius);
@@ -512,9 +555,9 @@
                 ctx.textAlign = "right";
                 ctx.fillStyle = "#ffffff";
                 ctx.font = "bold 12px 'Plus Jakarta Sans', sans-serif";
-                ctx.shadowColor = "rgba(0,0,0,0.3)";
+                ctx.shadowColor = "rgba(0,0,0,0.6)";
                 ctx.shadowBlur = 3;
-                ctx.fillText(wheelOptions[i], radius - 20, 4);
+                ctx.fillText(wheelOptions[i], radius - 15, 4);
                 ctx.restore();
             }
         }
@@ -524,8 +567,8 @@
             container.innerHTML = '';
             wheelOptions.forEach((opt, index) => {
                 const tag = document.createElement('span');
-                tag.className = 'inline-flex items-center gap-1 text-xs bg-rose-50 text-rose-700 px-2.5 py-1 rounded-lg border border-rose-200';
-                tag.innerHTML = `${opt} <button onclick="removeWheelOption(${index})" class="hover:text-rose-900 ml-1">✕</button>`;
+                tag.className = 'inline-flex items-center gap-1 text-xs bg-white text-themeBlack px-2.5 py-1 rounded-lg border-2 border-themeBlack font-bold';
+                tag.innerHTML = `${opt} <button onclick="removeWheelOption(${index})" class="hover:text-themePink ml-1 font-bold">✕</button>`;
                 container.appendChild(tag);
             });
         }
@@ -564,7 +607,7 @@
             if (isSpinning) return;
             isSpinning = true;
 
-            const extraSpins = 5 + Math.floor(Math.random() * 5); // 5 to 10 full spins
+            const extraSpins = 5 + Math.floor(Math.random() * 5);
             const randomDegrees = Math.floor(Math.random() * 360);
             const totalDegrees = extraSpins * 360 + randomDegrees;
 
@@ -573,11 +616,9 @@
 
             setTimeout(() => {
                 isSpinning = false;
-                // Calculate winning slice (Pointer is at top / 270 deg)
                 const actualDegrees = currentRotation % 360;
                 const sliceSize = 360 / wheelOptions.length;
                 
-                // Adjustment for 12 o'clock pointer position
                 let winningIndex = Math.floor((360 - (actualDegrees % 360) + 270) % 360 / sliceSize);
                 winningIndex = (winningIndex + wheelOptions.length) % wheelOptions.length;
 
@@ -585,7 +626,6 @@
                 document.getElementById('spunResult').innerHTML = `🎉 ${winner}`;
                 document.getElementById('spunSubtext').innerText = "Yeay! Fix ya, kencan kita selanjutnya adalah ini!";
 
-                // Trigger Confetti
                 confetti({
                     particleCount: 60,
                     spread: 70,
@@ -616,23 +656,23 @@
                 : bucketList.filter(item => item.category === currentFilter);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center py-8 text-slateWarm/50 text-xs">Belum ada item di kategori ini. Tambahkan sekarang! ✨</div>`;
+                container.innerHTML = `<div class="col-span-2 text-center py-6 text-themeBlack-muted text-xs font-semibold">Belum ada item di kategori ini. Tambahkan sekarang! ✨</div>`;
             } else {
                 filtered.forEach(item => {
                     const card = document.createElement('div');
-                    card.className = `flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
+                    card.className = `flex items-center justify-between p-3 rounded-xl border-2 border-themeBlack transition-all ${
                         item.completed 
-                            ? 'bg-rose-50/50 border-rose-200/60 text-slateWarm/60' 
-                            : 'bg-white border-rose-100 shadow-sm hover:border-rose-200'
+                            ? 'bg-gray-100 text-themeBlack-muted opacity-80' 
+                            : 'bg-white shadow-[2px_2px_0px_#1A1A1A]'
                     }`;
                     card.innerHTML = `
                         <div class="flex items-center gap-3">
-                            <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleBucket(${item.id})" class="w-5 h-5 rounded-lg text-rose-500 focus:ring-rose-300 border-rose-300 cursor-pointer">
-                            <span class="text-sm font-medium ${item.completed ? 'line-through text-slateWarm/50' : 'text-slateWarm'}">${item.title}</span>
+                            <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleBucket(${item.id})" class="w-5 h-5 rounded border-2 border-themeBlack text-themePink focus:ring-themePink cursor-pointer">
+                            <span class="text-xs md:text-sm font-bold ${item.completed ? 'line-through text-themeBlack-muted' : 'text-themeBlack'}">${item.title}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-cream font-medium text-slateWarm/70">${item.category}</span>
-                            <button onclick="deleteBucket(${item.id})" class="text-slateWarm/30 hover:text-rose-500 text-xs px-1">
+                            <span class="text-[10px] px-2 py-0.5 rounded border border-themeBlack font-bold bg-themePink-light text-themeBlack">${item.category}</span>
+                            <button onclick="deleteBucket(${item.id})" class="text-themeBlack hover:text-themePink text-xs px-1">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -678,11 +718,11 @@
         function filterBucket(category) {
             currentFilter = category;
             document.querySelectorAll('.bucket-tab').forEach(btn => {
-                btn.classList.remove('bg-rose-500', 'text-white');
-                btn.classList.add('bg-rose-50', 'text-slateWarm');
+                btn.classList.remove('bg-themeBlack', 'text-white');
+                btn.classList.add('bg-themePink-light', 'text-themeBlack');
             });
-            event.target.classList.remove('bg-rose-50', 'text-slateWarm');
-            event.target.classList.add('bg-rose-500', 'text-white');
+            event.target.classList.remove('bg-themePink-light');
+            event.target.classList.add('bg-themeBlack', 'text-white');
             renderBucketList();
         }
 
@@ -720,28 +760,28 @@
                 const minutes = Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
 
                 const card = document.createElement('div');
-                card.className = 'bg-white rounded-3xl p-6 border border-rose-100 shadow-sm relative overflow-hidden flex flex-col justify-between';
+                card.className = 'hub-card p-5 relative flex flex-col justify-between';
                 card.innerHTML = `
-                    <button onclick="deleteCountdown(${item.id})" class="absolute top-4 right-4 text-slateWarm/30 hover:text-rose-500 text-xs">
+                    <button onclick="deleteCountdown(${item.id})" class="absolute top-4 right-4 text-themeBlack hover:text-themePink text-xs">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                     <div>
-                        <div class="text-2xl mb-2">${item.icon}</div>
-                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm">${item.title}</h3>
-                        <p class="text-xs text-slateWarm/60 mb-4">${new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                        <div class="text-2xl mb-1">${item.icon}</div>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack">${item.title}</h3>
+                        <p class="text-xs text-themeBlack-muted font-medium mb-3">${new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 text-center bg-rose-50/70 p-3 rounded-2xl border border-rose-100">
+                    <div class="grid grid-cols-3 gap-2 text-center bg-themeBrown-light p-2.5 rounded-xl border border-themeBlack">
                         <div>
-                            <div class="font-bold text-lg text-rose-600">${days}</div>
-                            <div class="text-[10px] text-slateWarm/60 font-medium">Hari</div>
+                            <div class="font-bold text-base text-themeBrown">${days}</div>
+                            <div class="text-[10px] text-themeBlack font-bold">Hari</div>
                         </div>
                         <div>
-                            <div class="font-bold text-lg text-rose-600">${hours}</div>
-                            <div class="text-[10px] text-slateWarm/60 font-medium">Jam</div>
+                            <div class="font-bold text-base text-themeBrown">${hours}</div>
+                            <div class="text-[10px] text-themeBlack font-bold">Jam</div>
                         </div>
                         <div>
-                            <div class="font-bold text-lg text-rose-600">${minutes}</div>
-                            <div class="text-[10px] text-slateWarm/60 font-medium">Menit</div>
+                            <div class="font-bold text-base text-themeBrown">${minutes}</div>
+                            <div class="text-[10px] text-themeBlack font-bold">Menit</div>
                         </div>
                     </div>
                 `;
@@ -772,7 +812,7 @@
         }
 
         /* ===================================================
-           4. MEMORY TIMELINE & GALLERY LOGIC
+           4. MEMORY TIMELINE & GALLERY LOGIC (BASE64 UPLOAD)
            =================================================== */
         const defaultMemories = [
             {
@@ -792,6 +832,7 @@
         ];
 
         let memories = JSON.parse(localStorage.getItem('ourHub_memories')) || defaultMemories;
+        let selectedBase64Image = "";
 
         function renderMemories() {
             const container = document.getElementById('memoryGrid');
@@ -799,20 +840,20 @@
 
             memories.forEach(mem => {
                 const card = document.createElement('div');
-                card.className = 'bg-cream/40 rounded-3xl p-4 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
+                card.className = 'hub-card-sm p-4 flex flex-col justify-between';
                 card.innerHTML = `
                     <div>
-                        <div class="relative h-48 rounded-2xl overflow-hidden mb-3 bg-rose-100">
-                            <img src="${mem.img || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&auto=format&fit=crop&q=60'}" alt="${mem.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-rose-500 shadow-sm">
+                        <div class="relative h-44 rounded-xl overflow-hidden mb-3 bg-themeBlue-light border-2 border-themeBlack">
+                            <img src="${mem.img}" alt="${mem.title}" class="w-full h-full object-cover">
+                            <span class="absolute top-2 left-2 bg-white text-themeBlack border border-themeBlack px-2.5 py-0.5 rounded-md text-[10px] font-bold shadow-sm">
                                 🗓️ ${new Date(mem.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
                             </span>
                         </div>
-                        <h3 class="font-serif-custom font-bold text-base text-slateWarm mb-1">${mem.title}</h3>
-                        <p class="text-xs text-slateWarm/75 italic leading-relaxed">"${mem.note}"</p>
+                        <h3 class="font-serif-custom font-bold text-base text-themeBlack mb-1">${mem.title}</h3>
+                        <p class="text-xs text-themeBlack-muted italic leading-relaxed">"${mem.note}"</p>
                     </div>
-                    <div class="text-right mt-3 pt-2 border-t border-rose-100/60">
-                        <button onclick="deleteMemory(${mem.id})" class="text-[11px] text-slateWarm/40 hover:text-rose-500">
+                    <div class="text-right mt-3 pt-2 border-t border-gray-200">
+                        <button onclick="deleteMemory(${mem.id})" class="text-[11px] font-bold text-themePink hover:text-themeBlack">
                             <i class="fa-solid fa-trash"></i> Hapus
                         </button>
                     </div>
@@ -823,17 +864,48 @@
 
         function toggleMemoryModal() {
             document.getElementById('memoryModal').classList.toggle('hidden');
+            removeSelectedImage();
+        }
+
+        function previewMemoryImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedBase64Image = e.target.result;
+                    document.getElementById('imagePreview').src = selectedBase64Image;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                    document.getElementById('uploadBox').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeSelectedImage() {
+            selectedBase64Image = "";
+            document.getElementById('memImgFile').value = "";
+            document.getElementById('imagePreview').src = "";
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('uploadBox').classList.remove('hidden');
         }
 
         function addMemoryItem(e) {
             e.preventDefault();
             const title = document.getElementById('memTitle').value;
             const date = document.getElementById('memDate').value;
-            const img = document.getElementById('memImg').value;
             const note = document.getElementById('memNote').value;
 
-            memories.unshift({ id: Date.now(), title, date, img, note });
-            localStorage.setItem('ourHub_memories', JSON.stringify(memories));
+            const finalImage = selectedBase64Image || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&auto=format&fit=crop&q=60';
+
+            memories.unshift({ id: Date.now(), title, date, img: finalImage, note });
+            
+            try {
+                localStorage.setItem('ourHub_memories', JSON.stringify(memories));
+            } catch (err) {
+                alert("Ukuran foto terlalu besar untuk memori browser. Coba gunakan foto dengan ukuran file lebih kecil!");
+                return;
+            }
+
             toggleMemoryModal();
             renderMemories();
         }
@@ -863,6 +935,13 @@
             document.getElementById('noteReaderModal').classList.add('hidden');
         }
 
+        function resetAllData() {
+            if (confirm("Apakah kamu yakin ingin mengembalikan semua data ke pengaturan awal?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
         /* INITIALIZATION ON WINDOW LOAD */
         window.onload = function() {
             drawWheel();
@@ -871,7 +950,6 @@
             renderCountdowns();
             renderMemories();
 
-            // Refresh countdown timer dynamically
             setInterval(renderCountdowns, 60000);
         };
     </script>
