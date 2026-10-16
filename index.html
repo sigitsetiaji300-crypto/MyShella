@@ -3,272 +3,877 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda & Journal Harian Pryshella</title>
-    
-    <!-- Ikon Web / Favicon (Opsional, pastikan ada file gambar favicon.png jika ingin dipakai) -->
-    <link rel="icon" type="image/png" href="favicon.png">
-
+    <title>Our Hub - Portal Spesial Kita ❤️</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Firebase SDK & Koneksi ke Proyek Pryshella25 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        // Konfigurasi Firebase Anda
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMoO6h8icG9XbnWsZNGVivJ9-EUNNzfww",
-            authDomain: "pryshella25.firebaseapp.com",
-            projectId: "pryshella25",
-            storageBucket: "pryshella25.firebasestorage.app",
-            messagingSenderId: "613721573010",
-            appId: "1:613721573010:web:4b8f5c1d6aea67089d484b",
-            measurementId: "G-FQG2CDY2JH"
-        };
-
-        // Inisialisasi Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Ekspor ke global window agar fungsi lain bisa mengakses database
-        window.db = db;
-        window.docRef = doc;
-        window.getDocData = getDoc;
-        window.setDocData = setDoc;
-
-        // Fungsi Otomatis saat Tanggal Diganti (Mengambil data dari Firestore)
-        window.loadDataForDate = async function(dateStr) {
-            try {
-                const docRef = window.docRef(window.db, "journals", dateStr);
-                const docSnap = await window.getDocData(docRef);
-                
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    document.getElementById('moodSelect').value = data.mood || "😊 Senang & Bersemangat";
-                    waterCount = data.water_count || 0;
-                    document.getElementById('waterText').innerText = `${waterCount} / 8 Gelas`;
-                    todos = data.todos || [];
-                    renderTodos();
-                    document.getElementById('loveNote').value = data.love_note || "";
-                    
-                    if(data.photo_data) {
-                        base64Photo = data.photo_data;
-                        document.getElementById('imagePreview').src = base64Photo;
-                        document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                    } else {
-                        base64Photo = "";
-                        document.getElementById('imagePreviewContainer').classList.add('hidden');
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                        },
+                        blush: {
+                            light: '#FFF5F5',
+                            card: '#FFF0F3',
+                            accent: '#FFB4A2',
+                            border: '#FFCDB2'
+                        },
+                        cream: '#FAF7F2',
+                        slateWarm: '#4A4E69',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
                     }
-                } else {
-                    // Reset jika tanggal belum ada data
-                    document.getElementById('moodSelect').value = "😊 Senang & Bersemangat";
-                    waterCount = 0;
-                    document.getElementById('waterText').innerText = `0 / 8 Gelas`;
-                    todos = [];
-                    renderTodos();
-                    document.getElementById('loveNote').value = "";
-                    base64Photo = "";
-                    document.getElementById('imagePreviewContainer').classList.add('hidden');
                 }
-            } catch (e) {
-                console.error("Gagal memuat data: ", e);
             }
         }
-
-        // Fungsi Simpan Data ke Firebase Firestore
-        window.saveDataToCloud = async function() {
-            const dateStr = document.getElementById('selectedDate').value;
-            if(!dateStr) {
-                alert("Pilih tanggal terlebih dahulu!");
-                return;
-            }
-
-            const mood = document.getElementById('moodSelect').value;
-            const loveNote = document.getElementById('loveNote').value;
-
-            try {
-                const docRef = window.docRef(window.db, "journals", dateStr);
-                await window.setDocData(docRef, {
-                    entry_date: dateStr,
-                    mood: mood,
-                    water_count: waterCount,
-                    todos: todos,
-                    love_note: loveNote,
-                    photo_data: base64Photo,
-                    updated_at: new Date().toISOString()
-                });
-                alert("Berhasil! Data & Foto harian berhasil disimpan ke Cloud 💖");
-            } catch (e) {
-                console.error("Gagal menyimpan: ", e);
-                alert("Terjadi kesalahan saat menyimpan data.");
-            }
-        }
-
-        // Jalankan saat pertama kali halaman dibuka
-        window.addEventListener('DOMContentLoaded', () => {
-            const today = document.getElementById('selectedDate').value;
-            window.loadDataForDate(today);
-
-            document.getElementById('selectedDate').addEventListener('change', (e) => {
-                window.loadDataForDate(e.target.value);
-            });
-        });
     </script>
-
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body {
+            background-color: #FAF7F2;
+            color: #4A4E69;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-serif-custom {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF7F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB4A2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E5989B;
+        }
+        /* Canvas Spinner Smoothness */
+        #wheelCanvas {
+            transition: transform 4s cubic-bezier(0.15, 0.99, 0.24, 0.99);
+        }
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 205, 178, 0.4);
+        }
     </style>
 </head>
-<body class="bg-white text-black min-h-screen pb-12">
-    <!-- Header Romantis -->
-    <header class="bg-pink-100 border-b border-pink-200 py-6 px-4 text-center shadow-sm">
-        <h1 class="text-2xl md:text-3xl font-bold text-pink-600">Diary myShella</h1>
-        <p class="text-sm text-gray-700 mt-1">Hayy sayangg.kenalin aku Yossi.Suami kamu di masa dapann ASEKKKKKKKKKKKKKKKKKKKKK.</p>
+<body class="min-h-screen pb-16">
+
+    <!-- Top Navigation / Header -->
+    <header class="sticky top-0 z-40 glass-card border-b border-blush-border/30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 shadow-inner">
+                    <i class="fa-solid font-bold fa-heart text-xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif-custom font-bold text-lg md:text-xl text-slateWarm leading-tight">Our Special Hub</h1>
+                    <p class="text-xs text-rose-400 font-medium">Ruang Cerita & Momen Kita 💕</p>
+                </div>
+            </div>
+            <!-- Quick Navigation Pills -->
+            <nav class="hidden md:flex gap-1 bg-rose-50/80 p-1.5 rounded-full border border-rose-100 text-xs font-medium">
+                <a href="#spinner-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Ide Kencan</a>
+                <a href="#bucket-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Bucket List</a>
+                <a href="#countdown-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Countdown</a>
+                <a href="#timeline-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Galeri Memori</a>
+                <a href="#notes-section" class="px-3 py-1.5 rounded-full hover:bg-white hover:text-rose-500 transition-all">Surat Rahasia</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
-        <!-- Status Panel / Tanggal & Mood -->
-        <div class="bg-pink-50 border border-pink-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1">Pilih Tanggal Jurnal:</label>
-                <input type="date" id="selectedDate" class="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium focus:outline-pink-500">
-            </div>
-            <div class="text-center md:text-right">
-                <span class="text-xs font-semibold text-gray-600 block mb-1">Mood Hari Ini:</span>
-                <select id="moodSelect" class="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium focus:outline-pink-500">
-                    <option value="😊 Senang ">😊 Senang </option>
-                    <option value="💖 Salting">💖 Salting</option>
-                    <option value="☕ Santai & Tenang">☕ Santai & Tenang</option>
-                    <option value="🌧️ Miss">🌧️ Miss</option>
-                     <option value="🤬 Angry">🌧️ Angry</option>
-                      <option value="🤣 BENGISSS">🌧️ BENGISSS</option>
-                </select>
-            </div>
-        </div>
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 pt-6 space-y-12">
 
-        <!-- Grid Fitur Utama -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Water Tracker -->
-            <div class="bg-white border border-blue-100 rounded-2xl p-5 shadow-sm">
-                <h2 class="text-lg font-bold text-blue-600 mb-3 flex items-center gap-2">💧 Hidrasi Harian (Air Minum)</h2>
-                <p class="text-xs text-gray-500 mb-4">Target: 8 Gelas per hari. Jangan lupa minum ya sayang!</p>
-                <div class="flex items-center justify-between">
-                    <span id="waterText" class="text-2xl font-bold text-blue-700">0 / 8 Gelas</span>
-                    <div class="space-x-2">
-                        <button onclick="updateWater(-1)" class="bg-gray-100 hover:bg-gray-200 text-black px-3 py-2 rounded-xl text-sm font-bold">-</button>
-                        <button onclick="updateWater(1)" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold">+ Minum</button>
+        <!-- Hero Greeting Banner -->
+        <section class="relative rounded-3xl bg-gradient-to-r from-rose-100 via-blush-card to-orange-50 p-6 md:p-10 shadow-sm border border-blush-border/40 overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-rose-500 pointer-events-none">
+                <i class="fa-solid fa-heart text-[220px]"></i>
+            </div>
+            <div class="relative z-10 max-w-2xl">
+                <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-semibold text-rose-500 shadow-sm border border-rose-100 inline-block mb-3">
+                    ✨ Welcome Back, Love!
+                </span>
+                <h2 class="font-serif-custom text-2xl md:text-4xl font-bold text-slateWarm mb-3 leading-snug">
+                    Tempat Menyimpan Setiap Jejak Kebahagiaan Kita.
+                </h2>
+                <p class="text-sm md:text-base text-slateWarm/80 leading-relaxed mb-6">
+                    Mulai dari bingung mau kencan ke mana, merencanakan mimpi bersama, hingga melihat kembali memori manis yang pernah kita lalui.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#spinner-section" class="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-medium px-5 py-2.5 rounded-2xl shadow-md shadow-rose-200 transition-all transform hover:-translate-y-0.5 text-sm">
+                        <i class="fa-solid fa-compass"></i> Putar Roda Kencan
+                    </a>
+                    <a href="#notes-section" class="inline-flex items-center gap-2 bg-white hover:bg-rose-50 text-rose-500 font-medium px-5 py-2.5 rounded-2xl border border-rose-200 transition-all text-sm">
+                        <i class="fa-solid fa-envelope-open-text"></i> Baca Surat Rahasia
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. DATE NIGHT SPINNER / DECISION MAKER -->
+        <section id="spinner-section" class="scroll-mt-20">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Date Night Decision Maker</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">"Mau Makan/Kencan ke Mana?" 🤔</h2>
+                <p class="text-sm text-slateWarm/70 mt-1">Gak perlu bingung lagi pas ditanya mau ke mana. Putar rodanya dan biarkan takdir yang memilih!</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
+                <!-- Wheel Canvas Area -->
+                <div class="lg:col-span-7 flex flex-col items-center justify-center relative">
+                    <!-- Pointer Arrow -->
+                    <div class="absolute -top-3 z-20 text-rose-600 drop-shadow-md">
+                        <i class="fa-solid fa-location-pin text-4xl transform rotate-180"></i>
+                    </div>
+                    <!-- Canvas -->
+                    <div class="relative w-full max-w-[340px] aspect-square flex items-center justify-center p-2 bg-rose-50/50 rounded-full border border-rose-100 shadow-inner">
+                        <canvas id="wheelCanvas" width="320" height="320" class="rounded-full shadow-lg"></canvas>
+                    </div>
+                    <!-- Spin Button -->
+                    <button id="spinBtn" onclick="spinWheel()" class="mt-6 bg-gradient-to-r from-rose-500 to-rose-400 hover:from-rose-600 hover:to-rose-500 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-rose-200 transition-all transform active:scale-95 flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-dice text-lg"></i> Putar Roda!
+                    </button>
+                </div>
+
+                <!-- Result & Options Management -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Winner Box -->
+                    <div class="bg-gradient-to-br from-blush-card to-rose-50 p-5 rounded-2xl border border-rose-200 text-center relative overflow-hidden">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-rose-400 mb-1">Hasil Putaran Saat Ini</div>
+                        <div id="spunResult" class="font-serif-custom text-xl md:text-2xl font-bold text-rose-600 my-2">
+                            ✨ Siap Diputar!
+                        </div>
+                        <p id="spunSubtext" class="text-xs text-slateWarm/70 italic">Klik tombol "Putar Roda!" untuk menentukan agenda kencan kalian.</p>
+                    </div>
+
+                    <!-- Custom Option Input -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slateWarm mb-2">Tambah Pilihan Kencan Baru:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="newOptionInput" placeholder="Misal: Thrift Shopping, Es Krim..." class="flex-1 px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 bg-cream/40">
+                            <button onclick="addWheelOption()" class="bg-slateWarm hover:bg-slateWarm/90 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-1">
+                                <i class="fa-solid fa-plus"></i> Tambah
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Options List -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-slateWarm">Daftar Pilihan:</span>
+                            <button onclick="resetWheelOptions()" class="text-xs text-rose-500 hover:underline">Reset Default</button>
+                        </div>
+                        <div id="optionsList" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-1">
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Daily Quote Suami -->
-            <div class="bg-white border border-pink-100 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h2 class="text-lg font-bold text-pink-600 mb-2">💌 Pesan Cinta Hari Ini</h2>
-                    <p id="dailyQuote" class="text-sm italic text-gray-700">"Kamu adalah alasan kenapa setiap pagi aku semangat buat scholl.neng nek nesu yo oraanoo."</p>
+        <!-- 2. INTERACTIVE SHARED BUCKET LIST -->
+        <section id="bucket-section" class="scroll-mt-20">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-rose-100">
+                    <div>
+                        <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Dream Together</span>
+                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Target & Bucket List Bersama ✈️</h2>
+                        <p class="text-sm text-slateWarm/70 mt-1">Daftar petualangan dan impian manis yang ingin kita wujudkan berdua.</p>
+                    </div>
+
+                    <!-- Progress Bar Component -->
+                    <div class="bg-rose-50/80 p-4 rounded-2xl border border-rose-100 min-w-[240px]">
+                        <div class="flex justify-between items-center text-xs font-bold text-slateWarm mb-1.5">
+                            <span>Progress Terwujud</span>
+                            <span id="bucketProgressText" class="text-rose-500">0%</span>
+                        </div>
+                        <div class="w-full h-3 bg-rose-100 rounded-full overflow-hidden">
+                            <div id="bucketProgressBar" class="h-full bg-gradient-to-r from-rose-400 to-rose-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div class="text-[11px] text-slateWarm/60 text-right mt-1" id="bucketCountDetail">0 dari 0 selesai</div>
+                    </div>
                 </div>
-                <button onclick="changeQuote()" class="mt-4 bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-bold py-2 rounded-xl transition">Ganti Pesan Manis ✨</button>
-            </div>
-        </div>
 
-        <!-- To-Do List Harian -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-            <h2 class="text-lg font-bold text-black mb-3">📝 To-Do List & Rencana Hari Ini</h2>
-            <div class="flex gap-2 mb-4">
-                <input type="text" id="todoInput" placeholder="Contoh: Belanja sayur, Me-time, Masak kesukaan suami..." class="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-pink-500">
-                <button onclick="addTodo()" class="bg-black text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-gray-800">Tambah</button>
-            </div>
-            <ul id="todoList" class="space-y-2"></ul>
-        </div>
+                <!-- Add New Bucket Item Form -->
+                <form id="bucketForm" onsubmit="addBucketItem(event)" class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-8 bg-cream/50 p-4 rounded-2xl border border-blush-border/40">
+                    <div class="md:col-span-5">
+                        <input type="text" id="bucketTitle" placeholder="Misal: Liburan ke Bali, Nonton Konser..." required class="w-full px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                    </div>
+                    <div class="md:col-span-4">
+                        <select id="bucketCategory" class="w-full px-4 py-2.5 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 bg-white">
+                            <option value="Liburan">🏝️ Liburan & Jalan-jalan</option>
+                            <option value="Kuliner">🍕 Wisata Kuliner</option>
+                            <option value="Target">🎯 Target / Milestone Bersama</option>
+                            <option value="Aktivitas">🎨 Aktivitas Seru & Hobi</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-3">
+                        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-2.5 rounded-xl text-sm transition-all shadow-md shadow-rose-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i> Tambah Wish
+                        </button>
+                    </div>
+                </form>
 
-        <!-- Daily Photo & Note Journal -->
-        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
-            <h2 class="text-lg font-bold text-black">📸 Momen Spesial & Catatan Harian</h2>
-            <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1">Unggah Foto Hari Ini:</label>
-                <input type="file" id="photoInput" accept="image/*" onchange="previewImage(event)" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
-                <div id="imagePreviewContainer" class="mt-3 hidden">
-                    <img id="imagePreview" class="max-h-48 rounded-xl object-cover border border-gray-200">
+                <!-- Filter Tabs -->
+                <div class="flex gap-2 border-b border-rose-100 pb-3 mb-6 overflow-x-auto text-xs font-semibold">
+                    <button onclick="filterBucket('All')" class="bucket-tab active px-4 py-2 rounded-xl bg-rose-500 text-white transition-all">Semua</button>
+                    <button onclick="filterBucket('Liburan')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🏝️ Liburan</button>
+                    <button onclick="filterBucket('Kuliner')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🍕 Kuliner</button>
+                    <button onclick="filterBucket('Target')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🎯 Target</button>
+                    <button onclick="filterBucket('Aktivitas')" class="bucket-tab px-4 py-2 rounded-xl bg-rose-50 text-slateWarm hover:bg-rose-100 transition-all">🎨 Aktivitas</button>
+                </div>
+
+                <!-- Bucket List Container -->
+                <div id="bucketListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Populated by JS -->
                 </div>
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1">Cerita / Catatan Singkat:</label>
-                <textarea id="loveNote" rows="3" placeholder="Tulis cerita atau hal seru hari ini di sini..." class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:outline-pink-500"></textarea>
+        </section>
+
+        <!-- 3. COUNTDOWN TIMER & REMINDERS -->
+        <section id="countdown-section" class="scroll-mt-20">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Special Milestones</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Momen Spesial Yang Ditunggu ⏳</h2>
+                <p class="text-sm text-slateWarm/70 mt-1">Menghitung detik demi detik menuju hari bahagia kita berikutnya.</p>
             </div>
-            <button onclick="window.saveDataToCloud()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition shadow-md">Simpan Perubahan Hari Ini 💖</button>
-        </div>
+
+            <!-- Countdown Cards Grid -->
+            <div id="countdownGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Add Custom Countdown Toggle Button -->
+            <div class="text-center">
+                <button onclick="toggleCountdownModal()" class="inline-flex items-center gap-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 px-4 py-2 rounded-xl border border-rose-200 transition-all">
+                    <i class="fa-solid fa-calendar-plus"></i> Tambah Event / Countdown Baru
+                </button>
+            </div>
+
+            <!-- Modal Add Countdown -->
+            <div id="countdownModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rose-100 relative animate-fade-in">
+                    <button onclick="toggleCountdownModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                    <h3 class="font-serif-custom font-bold text-xl text-slateWarm mb-1">Tambah Countdown Baru</h3>
+                    <p class="text-xs text-slateWarm/70 mb-4">Buat pengingat hari ulang tahun, kencan, atau acara liburan mendatang.</p>
+                    
+                    <form onsubmit="addCustomCountdown(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Nama Acara / Momen:</label>
+                            <input type="text" id="cdTitle" required placeholder="Misal: Anniversary Ke-2, Liburan Jogja" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Tanggal Acara:</label>
+                            <input type="date" id="cdDate" required class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Pilih Ikon / Emoji:</label>
+                            <select id="cdIcon" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                                <option value="💖">💖 Heart / Romantic</option>
+                                <option value="🎂">🎂 Ulang Tahun</option>
+                                <option value="✈️">✈️ Liburan / Traveling</option>
+                                <option value="🍿">🍿 Date Night / Bioskop</option>
+                                <option value="💍">💍 Special Milestone</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" onclick="toggleCountdownModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slateWarm hover:bg-slate-100">Batal</button>
+                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-medium bg-rose-500 hover:bg-rose-600 text-white shadow-md">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. MEMORY TIMELINE & GALLERY -->
+        <section id="timeline-section" class="scroll-mt-20">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-rose-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-rose-100">
+                    <div>
+                        <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Memory Lane</span>
+                        <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Galeri & Timeline Kenangan 📸</h2>
+                        <p class="text-sm text-slateWarm/70 mt-1">Kumpulan momen berharga yang tak pernah pudar oleh waktu.</p>
+                    </div>
+                    <button onclick="toggleMemoryModal()" class="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white font-medium px-4 py-2.5 rounded-xl shadow-md shadow-rose-200 transition-all text-sm">
+                        <i class="fa-solid fa-camera-retro"></i> Tambah Kenangan Baru
+                    </button>
+                </div>
+
+                <!-- Timeline / Grid Container -->
+                <div id="memoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Modal Add Memory -->
+            <div id="memoryModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-rose-100 relative animate-fade-in">
+                    <button onclick="toggleMemoryModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                    <h3 class="font-serif-custom font-bold text-xl text-slateWarm mb-1">Simpan Momen Baru</h3>
+                    <p class="text-xs text-slateWarm/70 mb-4">Abadikan momen manis yang baru saja kalian lewati bersama.</p>
+                    
+                    <form onsubmit="addMemoryItem(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Judul Momen:</label>
+                            <input type="text" id="memTitle" required placeholder="Misal: Kencan Pertama di Cafe, Pantai Parangtritis" class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Tanggal Momen:</label>
+                            <input type="date" id="memDate" required class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">URL Foto (Opsional):</label>
+                            <input type="url" id="memImg" placeholder="https://images.unsplash.com/..." class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300">
+                            <span class="text-[10px] text-slateWarm/50">Kosongkan jika ingin menggunakan gambar estetik otomatis.</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slateWarm mb-1">Catatan / Pesan Singkat:</label>
+                            <textarea id="memNote" rows="3" required placeholder="Tuliskan cerita singkat atau perasaanmu di momen ini..." class="w-full px-4 py-2 rounded-xl border border-rose-200 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" onclick="toggleMemoryModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-slateWarm hover:bg-slate-100">Batal</button>
+                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-medium bg-rose-500 hover:bg-rose-600 text-white shadow-md">Simpan Momen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PRIVATE LOVE NOTES / MOOD BOOSTER -->
+        <section id="notes-section" class="scroll-mt-20">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <span class="text-xs font-bold text-rose-500 tracking-wider uppercase bg-rose-100/60 px-3 py-1 rounded-full">Open When... Letters</span>
+                <h2 class="font-serif-custom text-2xl md:text-3xl font-bold text-slateWarm mt-2">Surat Pelipur Lara & Mood Booster 💌</h2>
+                <p class="text-sm text-slateWarm/70 mt-1">Buka surat digital ini di saat kamu membutuhkan semangat atau pengingat betapa berharganya kamu.</p>
+            </div>
+
+            <!-- Open When Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-rose-100/80 text-rose-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            🥺
+                        </div>
+                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #1</span>
+                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Kamu Kangen...</h3>
+                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Pesan spesial ketika rasa rindu sedang datang dan jarak terasa memisah.</p>
+                    </div>
+                    <button onclick="openNoteModal('Buka Saat Kamu Kangen... 🥺', 'Ingat ya, sejauh apa pun jaraknya atau sesibuk apa pun harinya, kamu selalu ada di pikiranku. Kangen itu tanda kalau kehadiranmu sangat berarti buat aku. Kalau kangen, langsung telfon atau kirim pesan ya! Aku di sini buat kamu. ❤️')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open"></i> Buka Surat
+                    </button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-100/80 text-amber-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            😮‍💨
+                        </div>
+                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #2</span>
+                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Kamu Lelah/Capek...</h3>
+                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Sedikit pelukan hangat digital setelah hari yang panjang dan menguras energi.</p>
+                    </div>
+                    <button onclick="openNoteModal('Buka Saat Kamu Lelah/Capek... 😮‍💨', 'Terima kasih ya sudah berjuang hebat hari ini. Kamu luar biasa! Sekarang rest dulu, jangan terlalu keras sama diri sendiri. Apapun masalahnya, kita hadapi bareng-bareng. Mau dipukpuk atau ditemani ngobrol? Aku siap mendengarkan! ☕✨')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open"></i> Buka Surat
+                    </button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-blue-100/80 text-blue-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            💪
+                        </div>
+                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #3</span>
+                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Butuh Motivasi...</h3>
+                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Suntikan semangat saat kamu sedang meragukan kemampuan dirimu sendiri.</p>
+                    </div>
+                    <button onclick="openNoteModal('Buka Saat Butuh Motivasi... 💪', 'Jangan pernah ragu sama kemampuan kamu! Aku adalah orang yang paling percaya kalau kamu bisa melewati ini semua. Kamu pintar, kuat, dan punya hati yang luar biasa. Tarik napas dalam-dalam, kamu pasti bisa! Aku selalu dukung kamu di belakang. 🚀')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open"></i> Buka Surat
+                    </button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white rounded-3xl p-5 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100/80 text-emerald-500 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            🥳
+                        </div>
+                        <span class="text-[11px] font-bold text-rose-400 uppercase tracking-wider">Surat #4</span>
+                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm mt-1">Buka Saat Ada Kabar Bahagia!</h3>
+                        <p class="text-xs text-slateWarm/70 mt-2 line-clamp-2">Perayaan kecil atas setiap pencapaian dan kebahagiaan yang kamu raih.</p>
+                    </div>
+                    <button onclick="openNoteModal('Buka Saat Ada Kabar Bahagia! 🥳', 'YAY! SELAMAT YAAA! 🎉 Aku melompat bahagia dengar kabar baik ini! Kamu pantas banget mendapatkan ini semua setelah kerja kerasmu. Yuk perbaiki mood, kita rayakan bareng dengan makan makanan kesukaanmu nanti malam! Love you so much! 🥰')" class="mt-5 w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-500 text-rose-600 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open"></i> Buka Surat
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <script>
-        // Set tanggal default hari ini
-        document.getElementById('selectedDate').valueAsDate = new Date();
+    <!-- Modal Reader Love Notes -->
+    <div id="noteReaderModal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-white to-blush-light rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-rose-200 relative text-center">
+            <button onclick="closeNoteModal()" class="absolute top-4 right-4 text-slateWarm/40 hover:text-slateWarm">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto text-rose-500 text-2xl mb-4 shadow-inner">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <h3 id="noteModalTitle" class="font-serif-custom font-bold text-2xl text-slateWarm mb-4">Judul Surat</h3>
+            <div class="bg-white/80 p-6 rounded-2xl border border-rose-100 shadow-sm text-slateWarm text-sm md:text-base leading-relaxed font-serif-custom italic mb-6" id="noteModalContent">
+                Isi pesan...
+            </div>
+            <button onclick="closeNoteModal()" class="bg-rose-500 hover:bg-rose-600 text-white font-medium px-6 py-2.5 rounded-xl shadow-md text-sm transition-all">
+                Terima Kasih, Sayang ❤️
+            </button>
+        </div>
+    </div>
 
-        const quotes = [
-            "Kamu adalah alasan kenapa setiap pagiku terasa begitu berarti dan membahagiakan.",
-            "Terima kasih sudah menjadi rumah tempatku pulang yang paling nyaman.",
-            "Senyummu adalah pemandangan terindah yang ingin kulihat setiap hari.",
-            "Pencapaian terbesarku di dunia ini adalah bisa memilikimu sebagai istriku."
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-rose-100 pt-8 text-center text-xs text-slateWarm/60">
+        <p>Made with ❤️ specially for us • Always & Forever</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ===================================================
+           1. DATE NIGHT SPINNER / WHEEL LOGIC
+           =================================================== */
+        const defaultOptions = [
+            "Cafe Aesthetic ☕",
+            "Kuliner Street Food 🍢",
+            "Nonton Bioskop 🍿",
+            "Picnic Taman 🧺",
+            "Masak Bareng di Rumah 🍳",
+            "Deep Talk di Coffee Shop 💬",
+            "Beli Es Krim & Jalan-jalan 🍦",
+            "Photobooth Bareng 📸"
         ];
 
-        function changeQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById('dailyQuote').innerText = `"${quotes[randomIndex]}"`;
+        let wheelOptions = JSON.parse(localStorage.getItem('ourHub_wheel')) || defaultOptions;
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const colors = ['#FFCDB2', '#FFB4A2', '#E5989B', '#B5838D', '#6B705C', '#FFE5D9', '#F4ACB7', '#D8E2DC'];
+
+        function drawWheel() {
+            const numOptions = wheelOptions.length;
+            const arcSize = (2 * Math.PI) / numOptions;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numOptions; i++) {
+                const angle = i * arcSize;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, angle, angle + arcSize);
+                ctx.lineTo(radius, radius);
+                ctx.fill();
+
+                // Draw Text
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 12px 'Plus Jakarta Sans', sans-serif";
+                ctx.shadowColor = "rgba(0,0,0,0.3)";
+                ctx.shadowBlur = 3;
+                ctx.fillText(wheelOptions[i], radius - 20, 4);
+                ctx.restore();
+            }
         }
 
-        let waterCount = 0;
-        function updateWater(change) {
-            waterCount = Math.max(0, Math.min(8, waterCount + change));
-            document.getElementById('waterText').innerText = `${waterCount} / 8 Gelas`;
-        }
-
-        let todos = [];
-        function addTodo() {
-            const val = document.getElementById('todoInput').value.trim();
-            if(!val) return;
-            todos.push({ text: val, completed: false });
-            document.getElementById('todoInput').value = '';
-            renderTodos();
-        }
-
-        function toggleTodo(index) {
-            todos[index].completed = !todos[index].completed;
-            renderTodos();
-        }
-
-        function deleteTodo(index) {
-            todos.splice(index, 1);
-            renderTodos();
-        }
-
-        function renderTodos() {
-            const list = document.getElementById('todoList');
-            list.innerHTML = '';
-            todos.forEach((item, idx) => {
-                list.innerHTML += `
-                    <li class="flex items-center justify-between bg-gray-50 border border-gray-100 px-3 py-2 rounded-xl text-sm">
-                        <label class="flex items-center gap-2 cursor-pointer ${item.completed ? 'line-through text-gray-400' : 'text-black'}">
-                            <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleTodo(${idx})" class="rounded text-pink-600 focus:ring-pink-500">
-                            ${item.text}
-                        </label>
-                        <button onclick="deleteTodo(${idx})" class="text-red-500 text-xs font-bold hover:underline">Hapus</button>
-                    </li>`;
+        function renderWheelOptionsList() {
+            const container = document.getElementById('optionsList');
+            container.innerHTML = '';
+            wheelOptions.forEach((opt, index) => {
+                const tag = document.createElement('span');
+                tag.className = 'inline-flex items-center gap-1 text-xs bg-rose-50 text-rose-700 px-2.5 py-1 rounded-lg border border-rose-200';
+                tag.innerHTML = `${opt} <button onclick="removeWheelOption(${index})" class="hover:text-rose-900 ml-1">✕</button>`;
+                container.appendChild(tag);
             });
         }
 
-        let base64Photo = "";
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    base64Photo = e.target.result;
-                    document.getElementById('imagePreview').src = base64Photo;
-                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
+        function addWheelOption() {
+            const input = document.getElementById('newOptionInput');
+            const val = input.value.trim();
+            if (val) {
+                wheelOptions.push(val);
+                localStorage.setItem('ourHub_wheel', JSON.stringify(wheelOptions));
+                input.value = '';
+                drawWheel();
+                renderWheelOptionsList();
             }
         }
+
+        function removeWheelOption(index) {
+            if (wheelOptions.length <= 2) {
+                alert("Minimal harus ada 2 pilihan kencan!");
+                return;
+            }
+            wheelOptions.splice(index, 1);
+            localStorage.setItem('ourHub_wheel', JSON.stringify(wheelOptions));
+            drawWheel();
+            renderWheelOptionsList();
+        }
+
+        function resetWheelOptions() {
+            wheelOptions = [...defaultOptions];
+            localStorage.setItem('ourHub_wheel', JSON.stringify(wheelOptions));
+            drawWheel();
+            renderWheelOptionsList();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const extraSpins = 5 + Math.floor(Math.random() * 5); // 5 to 10 full spins
+            const randomDegrees = Math.floor(Math.random() * 360);
+            const totalDegrees = extraSpins * 360 + randomDegrees;
+
+            currentRotation += totalDegrees;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                // Calculate winning slice (Pointer is at top / 270 deg)
+                const actualDegrees = currentRotation % 360;
+                const sliceSize = 360 / wheelOptions.length;
+                
+                // Adjustment for 12 o'clock pointer position
+                let winningIndex = Math.floor((360 - (actualDegrees % 360) + 270) % 360 / sliceSize);
+                winningIndex = (winningIndex + wheelOptions.length) % wheelOptions.length;
+
+                const winner = wheelOptions[winningIndex];
+                document.getElementById('spunResult').innerHTML = `🎉 ${winner}`;
+                document.getElementById('spunSubtext').innerText = "Yeay! Fix ya, kencan kita selanjutnya adalah ini!";
+
+                // Trigger Confetti
+                confetti({
+                    particleCount: 60,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }, 4000);
+        }
+
+        /* ===================================================
+           2. BUCKET LIST LOGIC
+           =================================================== */
+        const defaultBucket = [
+            { id: 1, title: "Liburan bareng ke pantai & liat sunset", category: "Liburan", completed: true },
+            { id: 2, title: "Mencoba buat kue / pastry berdua", category: "Kuliner", completed: false },
+            { id: 3, title: "Nonton konser musik penyanyi favorit", category: "Aktivitas", completed: false },
+            { id: 4, title: "Tabungan bersama wujudkan mimpi", category: "Target", completed: false }
+        ];
+
+        let bucketList = JSON.parse(localStorage.getItem('ourHub_bucket')) || defaultBucket;
+        let currentFilter = 'All';
+
+        function renderBucketList() {
+            const container = document.getElementById('bucketListContainer');
+            container.innerHTML = '';
+
+            const filtered = currentFilter === 'All' 
+                ? bucketList 
+                : bucketList.filter(item => item.category === currentFilter);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center py-8 text-slateWarm/50 text-xs">Belum ada item di kategori ini. Tambahkan sekarang! ✨</div>`;
+            } else {
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = `flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
+                        item.completed 
+                            ? 'bg-rose-50/50 border-rose-200/60 text-slateWarm/60' 
+                            : 'bg-white border-rose-100 shadow-sm hover:border-rose-200'
+                    }`;
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleBucket(${item.id})" class="w-5 h-5 rounded-lg text-rose-500 focus:ring-rose-300 border-rose-300 cursor-pointer">
+                            <span class="text-sm font-medium ${item.completed ? 'line-through text-slateWarm/50' : 'text-slateWarm'}">${item.title}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-cream font-medium text-slateWarm/70">${item.category}</span>
+                            <button onclick="deleteBucket(${item.id})" class="text-slateWarm/30 hover:text-rose-500 text-xs px-1">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            updateBucketProgress();
+        }
+
+        function addBucketItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('bucketTitle').value.trim();
+            const category = document.getElementById('bucketCategory').value;
+
+            if (title) {
+                const newItem = {
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    completed: false
+                };
+                bucketList.push(newItem);
+                localStorage.setItem('ourHub_bucket', JSON.stringify(bucketList));
+                document.getElementById('bucketTitle').value = '';
+                renderBucketList();
+            }
+        }
+
+        function toggleBucket(id) {
+            bucketList = bucketList.map(item => item.id === id ? { ...item, completed: !item.completed } : item);
+            localStorage.setItem('ourHub_bucket', JSON.stringify(bucketList));
+            renderBucketList();
+        }
+
+        function deleteBucket(id) {
+            bucketList = bucketList.filter(item => item.id !== id);
+            localStorage.setItem('ourHub_bucket', JSON.stringify(bucketList));
+            renderBucketList();
+        }
+
+        function filterBucket(category) {
+            currentFilter = category;
+            document.querySelectorAll('.bucket-tab').forEach(btn => {
+                btn.classList.remove('bg-rose-500', 'text-white');
+                btn.classList.add('bg-rose-50', 'text-slateWarm');
+            });
+            event.target.classList.remove('bg-rose-50', 'text-slateWarm');
+            event.target.classList.add('bg-rose-500', 'text-white');
+            renderBucketList();
+        }
+
+        function updateBucketProgress() {
+            const total = bucketList.length;
+            const completed = bucketList.filter(i => i.completed).length;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+            document.getElementById('bucketProgressBar').style.width = `${percent}%`;
+            document.getElementById('bucketProgressText').innerText = `${percent}%`;
+            document.getElementById('bucketCountDetail').innerText = `${completed} dari ${total} selesai`;
+        }
+
+        /* ===================================================
+           3. COUNTDOWN TIMER LOGIC
+           =================================================== */
+        const defaultCountdowns = [
+            { id: 1, title: "Anniversary Kita 💖", date: "2026-12-31", icon: "💖" },
+            { id: 2, title: "Liburan Bareng ✈️", date: "2026-08-17", icon: "✈️" }
+        ];
+
+        let countdowns = JSON.parse(localStorage.getItem('ourHub_countdowns')) || defaultCountdowns;
+
+        function renderCountdowns() {
+            const container = document.getElementById('countdownGrid');
+            container.innerHTML = '';
+
+            countdowns.forEach(item => {
+                const target = new Date(item.date).getTime();
+                const now = new Date().getTime();
+                const diff = target - now;
+
+                const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+                const hours = Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+                const minutes = Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-3xl p-6 border border-rose-100 shadow-sm relative overflow-hidden flex flex-col justify-between';
+                card.innerHTML = `
+                    <button onclick="deleteCountdown(${item.id})" class="absolute top-4 right-4 text-slateWarm/30 hover:text-rose-500 text-xs">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    <div>
+                        <div class="text-2xl mb-2">${item.icon}</div>
+                        <h3 class="font-serif-custom font-bold text-lg text-slateWarm">${item.title}</h3>
+                        <p class="text-xs text-slateWarm/60 mb-4">${new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center bg-rose-50/70 p-3 rounded-2xl border border-rose-100">
+                        <div>
+                            <div class="font-bold text-lg text-rose-600">${days}</div>
+                            <div class="text-[10px] text-slateWarm/60 font-medium">Hari</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg text-rose-600">${hours}</div>
+                            <div class="text-[10px] text-slateWarm/60 font-medium">Jam</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg text-rose-600">${minutes}</div>
+                            <div class="text-[10px] text-slateWarm/60 font-medium">Menit</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleCountdownModal() {
+            document.getElementById('countdownModal').classList.toggle('hidden');
+        }
+
+        function addCustomCountdown(e) {
+            e.preventDefault();
+            const title = document.getElementById('cdTitle').value;
+            const date = document.getElementById('cdDate').value;
+            const icon = document.getElementById('cdIcon').value;
+
+            countdowns.push({ id: Date.now(), title, date, icon });
+            localStorage.setItem('ourHub_countdowns', JSON.stringify(countdowns));
+            toggleCountdownModal();
+            renderCountdowns();
+        }
+
+        function deleteCountdown(id) {
+            countdowns = countdowns.filter(i => i.id !== id);
+            localStorage.setItem('ourHub_countdowns', JSON.stringify(countdowns));
+            renderCountdowns();
+        }
+
+        /* ===================================================
+           4. MEMORY TIMELINE & GALLERY LOGIC
+           =================================================== */
+        const defaultMemories = [
+            {
+                id: 1,
+                title: "Pertama Kali Ketemu & Ngobrol",
+                date: "2024-02-14",
+                img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60",
+                note: "Momen gugup pertama kali ketemu secara langsung. Masih ingat senyuman pertamamu hari itu!"
+            },
+            {
+                id: 2,
+                title: "Kencan Keliling Kota Malam Hari",
+                date: "2024-06-20",
+                img: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60",
+                note: "Beli es krim jam 10 malam sambil cerita tentang impian masa depan masing-masing."
+            }
+        ];
+
+        let memories = JSON.parse(localStorage.getItem('ourHub_memories')) || defaultMemories;
+
+        function renderMemories() {
+            const container = document.getElementById('memoryGrid');
+            container.innerHTML = '';
+
+            memories.forEach(mem => {
+                const card = document.createElement('div');
+                card.className = 'bg-cream/40 rounded-3xl p-4 border border-rose-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between';
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 rounded-2xl overflow-hidden mb-3 bg-rose-100">
+                            <img src="${mem.img || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&auto=format&fit=crop&q=60'}" alt="${mem.title}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-rose-500 shadow-sm">
+                                🗓️ ${new Date(mem.date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                            </span>
+                        </div>
+                        <h3 class="font-serif-custom font-bold text-base text-slateWarm mb-1">${mem.title}</h3>
+                        <p class="text-xs text-slateWarm/75 italic leading-relaxed">"${mem.note}"</p>
+                    </div>
+                    <div class="text-right mt-3 pt-2 border-t border-rose-100/60">
+                        <button onclick="deleteMemory(${mem.id})" class="text-[11px] text-slateWarm/40 hover:text-rose-500">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleMemoryModal() {
+            document.getElementById('memoryModal').classList.toggle('hidden');
+        }
+
+        function addMemoryItem(e) {
+            e.preventDefault();
+            const title = document.getElementById('memTitle').value;
+            const date = document.getElementById('memDate').value;
+            const img = document.getElementById('memImg').value;
+            const note = document.getElementById('memNote').value;
+
+            memories.unshift({ id: Date.now(), title, date, img, note });
+            localStorage.setItem('ourHub_memories', JSON.stringify(memories));
+            toggleMemoryModal();
+            renderMemories();
+        }
+
+        function deleteMemory(id) {
+            memories = memories.filter(m => m.id !== id);
+            localStorage.setItem('ourHub_memories', JSON.stringify(memories));
+            renderMemories();
+        }
+
+        /* ===================================================
+           5. LOVE NOTES READER LOGIC
+           =================================================== */
+        function openNoteModal(title, text) {
+            document.getElementById('noteModalTitle').innerText = title;
+            document.getElementById('noteModalContent').innerText = text;
+            document.getElementById('noteReaderModal').classList.remove('hidden');
+            
+            confetti({
+                particleCount: 30,
+                spread: 50,
+                origin: { y: 0.5 }
+            });
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteReaderModal').classList.add('hidden');
+        }
+
+        /* INITIALIZATION ON WINDOW LOAD */
+        window.onload = function() {
+            drawWheel();
+            renderWheelOptionsList();
+            renderBucketList();
+            renderCountdowns();
+            renderMemories();
+
+            // Refresh countdown timer dynamically
+            setInterval(renderCountdowns, 60000);
+        };
     </script>
 </body>
 </html>
